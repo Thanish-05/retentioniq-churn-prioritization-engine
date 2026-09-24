@@ -97,6 +97,8 @@ export default function App() {
           {activePage === 'segmentation' && (
             <SegmentationPage 
               onFilterBySegment={() => setActivePage('risk')}
+              onNavigateToOptimizer={handleNavigateToOptimizer}
+              onSelectCustomer={handleSelectCustomer}
             />
           )}
 
