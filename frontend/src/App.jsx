@@ -109,7 +109,9 @@ export default function App() {
           )}
 
           {activePage === 'insights' && (
-            <ModelInsightsPage />
+            <ModelInsightsPage 
+              onNavigate={setActivePage}
+            />
           )}
         </main>
       </div>
