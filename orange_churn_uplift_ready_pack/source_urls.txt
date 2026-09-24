@@ -1,0 +1,4 @@
+Official dataset repository: https://github.com/TheoVerhelst/Churn-Uplift-Dataset-Paper
+OpenML dataset 45580: https://www.openml.org/d/45580
+Mendeley mirror / record: https://data.mendeley.com/datasets/vrnzjwbnkd/1
+Paper DOI: https://doi.org/10.1007/978-3-031-74640-6_21

@@ -1,0 +1,6 @@
+column,role,description
+f0..f159,feature,160 anonymized numerical PCA components from the official dataset
+cat0..cat17,feature,18 anonymized categorical factors; exact names/categories come from the downloaded schema
+t,treatment,Randomized treatment assignment; 0=control, 1=treatment
+y,outcome,Churn outcome within two months; 0=did not churn, 1=churned
+customer_id,added,Generated sequential ID added by the preparation script

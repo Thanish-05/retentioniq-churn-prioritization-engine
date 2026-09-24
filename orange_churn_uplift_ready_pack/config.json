@@ -1,0 +1,14 @@
+{
+  "openml_dataset_id": 45580,
+  "dataset_name": "churn-uplift-orange",
+  "target_column": "y",
+  "treatment_column": "t",
+  "campaign_period": "2020-09 to 2020-12",
+  "default_business_assumptions": {
+    "customer_value_eur": 500.0,
+    "contact_cost_eur": 10.0,
+    "offer_cost_eur": 40.0,
+    "max_contact_rate": 0.30
+  },
+  "note": "Business assumptions are illustrative and are NOT inferred from the anonymized Orange dataset. Replace them with hackathon assumptions."
+}

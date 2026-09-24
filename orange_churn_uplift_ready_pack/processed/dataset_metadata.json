@@ -1,0 +1,12 @@
+{
+  "openml_dataset_id": 45580,
+  "openml_name": "churn-uplift-mlg",
+  "rows": 11896,
+  "columns": 181,
+  "feature_columns": 178,
+  "treatment_column": "treatment",
+  "outcome_column": "churned",
+  "treatment_rate": 0.7573974445191661,
+  "churn_rate": 0.03429724277067922,
+  "source": "OpenML 45580 / Orange Belgium Churn Uplift Dataset"
+}

@@ -1,0 +1,8 @@
+offer_id,offer_name,cost_eur,illustrative_effectiveness,action_type
+O01,Loyalty Reward,10,0.10,loyalty_reward
+O02,Small Discount,20,0.20,discount
+O03,Medium Discount,40,0.30,discount
+O04,Premium Retention Offer,70,0.40,premium_offer
+O05,Priority Support,15,0.15,service_recovery
+O06,Free Premium Trial,30,0.25,trial
+O00,No Action,0,0.00,control
