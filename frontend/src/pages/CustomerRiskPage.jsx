@@ -7,7 +7,9 @@ import {
   ChevronRight, 
   ExternalLink,
   ShieldAlert,
-  Sparkles
+  Sparkles,
+  RotateCcw,
+  AlertCircle
 } from 'lucide-react';
 import { fetchCustomers } from '../api';
 
@@ -17,6 +19,7 @@ export default function CustomerRiskPage({ onSelectCustomer }) {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Filters & Sorting state
   const [search, setSearch] = useState('');
@@ -27,6 +30,7 @@ export default function CustomerRiskPage({ onSelectCustomer }) {
 
   const loadData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await fetchCustomers({
         search,
@@ -41,6 +45,7 @@ export default function CustomerRiskPage({ onSelectCustomer }) {
       setTotalCount(res.total_count);
     } catch (err) {
       console.error(err);
+      setError('Unable to load customer intelligence data. Please verify the backend is running.');
     } finally {
       setLoading(false);
     }
@@ -54,6 +59,15 @@ export default function CustomerRiskPage({ onSelectCustomer }) {
     e.preventDefault();
     setPage(1);
     loadData();
+  };
+
+  const handleResetFilters = () => {
+    setSearch('');
+    setRiskFilter('All');
+    setPersuadabilityFilter('All');
+    setSortBy('churn');
+    setSortOrder('desc');
+    setPage(1);
   };
 
   const handleSortChange = (newSort) => {
@@ -70,6 +84,50 @@ export default function CustomerRiskPage({ onSelectCustomer }) {
 
   return (
     <div className="p-6 space-y-5 max-w-7xl mx-auto">
+      {/* Enterprise Page Header */}
+      <div className="glass-card rounded-xl p-5 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-blue-950/40 via-slate-900 to-indigo-950/40">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 uppercase tracking-wider">
+              Customer Intelligence Base
+            </span>
+            <span className="text-xs text-slate-400 font-medium hidden sm:inline">
+              11,896 Profiles · Churn Risk & Persuadability Scoring
+            </span>
+          </div>
+          <h1 className="text-2xl font-black text-white tracking-tight mt-1.5 flex items-center gap-2">
+            Customer Risk Intelligence
+          </h1>
+          <p className="text-xs text-slate-300 mt-1 max-w-3xl">
+            Search, filter, and inspect individual customer churn probability, causal uplift potential, and personalized retention ROI.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 self-start md:self-auto">
+          <div className="px-3.5 py-2 rounded-lg bg-slate-900/80 border border-slate-800 text-xs font-mono">
+            <span className="text-slate-400">Total Base: </span>
+            <span className="text-white font-bold">{totalCount ? totalCount.toLocaleString() : '11,896'}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Error state banner */}
+      {error && (
+        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="h-4 w-4 text-rose-400" />
+            <span>{error}</span>
+          </div>
+          <button
+            onClick={loadData}
+            className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded text-[11px] font-bold flex items-center gap-1"
+          >
+            <RotateCcw className="h-3 w-3" />
+            <span>Retry Query</span>
+          </button>
+        </div>
+      )}
+
       {/* Filters & Control Toolbar */}
       <div className="glass-card rounded-xl p-4 border border-slate-800 space-y-3">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
@@ -229,16 +287,39 @@ export default function CustomerRiskPage({ onSelectCustomer }) {
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-mono">
               {loading ? (
-                <tr>
-                  <td colSpan={11} className="py-12 text-center text-slate-400">
-                    <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mb-2"></div>
-                    <div className="text-xs font-sans">Querying customer intelligence base...</div>
-                  </td>
-                </tr>
+                [...Array(pageSize > 10 ? 10 : pageSize)].map((_, idx) => (
+                  <tr key={idx} className="animate-pulse border-b border-slate-800/40">
+                    <td className="py-3 px-3"><div className="h-4 w-16 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3"><div className="h-4 w-12 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3"><div className="h-4 w-14 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3"><div className="h-4 w-12 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3"><div className="h-4 w-28 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3"><div className="h-4 w-20 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3"><div className="h-4 w-24 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3"><div className="h-4 w-12 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3"><div className="h-4 w-16 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3"><div className="h-4 w-10 bg-slate-800/80 rounded"></div></td>
+                    <td className="py-3 px-3 text-right"><div className="h-6 w-14 bg-slate-800/80 rounded ml-auto"></div></td>
+                  </tr>
+                ))
               ) : customers.length === 0 ? (
                 <tr>
-                  <td colSpan={11} className="py-12 text-center text-slate-400 font-sans">
-                    No customers match the active filters.
+                  <td colSpan={11} className="py-16 text-center text-slate-400 font-sans">
+                    <div className="max-w-sm mx-auto space-y-3">
+                      <div className="h-10 w-10 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center mx-auto text-slate-400">
+                        <Filter className="h-5 w-5" />
+                      </div>
+                      <div className="text-sm font-bold text-white">No customers match the active filters</div>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        Try clearing your search term or resetting the risk level and persuadability segment filters.
+                      </p>
+                      <button
+                        onClick={handleResetFilters}
+                        className="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-all"
+                      >
+                        Reset All Filters
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -253,7 +334,7 @@ export default function CustomerRiskPage({ onSelectCustomer }) {
                       <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400" />
                     </td>
                     <td className="py-3 px-3 text-white font-sans font-semibold">
-                      {(c.churn_probability * 100).toFixed(2)}%
+                      {(c.churn_probability * 100).toFixed(1)}%
                     </td>
                     <td className="py-3 px-3 font-sans">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
@@ -283,7 +364,7 @@ export default function CustomerRiskPage({ onSelectCustomer }) {
                       </span>
                     </td>
                     <td className="py-3 px-3 text-slate-300 font-sans">
-                      €{c.customer_value_eur.toFixed(0)} <span className="text-[10px] text-slate-400">(₹{(c.customer_value_inr / 1000).toFixed(0)}k)</span>
+                      €{c.customer_value_eur.toFixed(0)} <span className="text-[10px] text-slate-400">(₹{c.customer_value_inr.toLocaleString()})</span>
                     </td>
                     <td className="py-3 px-3 font-sans">
                       <span className={`px-2 py-0.5 rounded text-[11px] font-medium ${
@@ -295,7 +376,7 @@ export default function CustomerRiskPage({ onSelectCustomer }) {
                       </span>
                     </td>
                     <td className="py-3 px-3 text-slate-400 font-sans">
-                      {c.recommended_offer === 'No Action' ? '—' : `₹${c.offer_cost_inr.toFixed(0)}`}
+                      {c.recommended_offer === 'No Action' ? '—' : `₹${c.offer_cost_inr.toLocaleString()}`}
                     </td>
                     <td className="py-3 px-3 text-emerald-400 font-bold font-sans">
                       {c.expected_value_saved_inr > 0 ? `₹${c.expected_value_saved_inr.toLocaleString()}` : '—'}

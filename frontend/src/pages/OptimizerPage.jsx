@@ -217,6 +217,17 @@ export default function OptimizerPage({ onSelectCustomer }) {
       {/* ========================================================================= */}
       {/* SECTION 2 — DECISION SUMMARY (5 Real Optimizer KPIs)                       */}
       {/* ========================================================================= */}
+      {!result && !error && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 animate-pulse">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="h-28 bg-slate-900/60 rounded-xl border border-slate-800 p-4 space-y-3">
+              <div className="h-3 w-20 bg-slate-800/80 rounded"></div>
+              <div className="h-7 w-24 bg-slate-800/80 rounded"></div>
+              <div className="h-2.5 w-32 bg-slate-800/80 rounded"></div>
+            </div>
+          ))}
+        </div>
+      )}
       {result && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
           {/* Metric 1: Retention Budget */}
