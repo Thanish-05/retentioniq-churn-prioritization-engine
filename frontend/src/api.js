@@ -1,4 +1,9 @@
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+// Resolves API base URL from VITE_API_URL or VITE_API_BASE, falling back to relative '/api' proxy
+const rawApiUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || '';
+const cleanApiUrl = rawApiUrl.replace(/\/+$/, '');
+const API_BASE = cleanApiUrl 
+  ? (cleanApiUrl.endsWith('/api') ? cleanApiUrl : `${cleanApiUrl}/api`)
+  : '/api';
 
 export async function fetchDashboard() {
   const res = await fetch(`${API_BASE}/dashboard`);
